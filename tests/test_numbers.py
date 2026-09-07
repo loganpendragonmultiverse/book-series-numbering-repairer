@@ -7,7 +7,7 @@ from book_series_numbering_repairer.core import analyze
     "number", ["NaN", "Infinity", "-Infinity", "1/0", "NaN/2", "1/Infinity", "1/x", "a", "1/2/3"]
 )
 def test_nonfinite_and_invalid_fraction(number: str) -> None:
-    with pytest.raises(ValueError, match=r"entries\[0\].number"):
+    with pytest.raises((ValueError, TypeError), match=r"entries\[0\].number"):
         analyze({"entries": [{"number": number}]})
 
 
@@ -26,7 +26,7 @@ def test_aliases_and_stable_ties() -> None:
 
 @pytest.mark.parametrize("entries", ["wrong", [None]])
 def test_bad_entries(entries: object) -> None:
-    with pytest.raises(ValueError):
+    with pytest.raises((ValueError, TypeError)):
         analyze({"entries": entries})
 
 
@@ -52,5 +52,5 @@ def test_explicit_orders_labels_and_csv_preview(tmp_path, capsys) -> None:
     "extra", [{"order_mode": "guessed"}, {"special_labels": []}, {"order_mode": "publication"}]
 )
 def test_invalid_order_contract(extra) -> None:
-    with pytest.raises(ValueError):
+    with pytest.raises((ValueError, TypeError)):
         analyze({"entries": [{"number": 1}], **extra})

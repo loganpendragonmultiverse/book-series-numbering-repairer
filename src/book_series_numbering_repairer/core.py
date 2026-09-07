@@ -10,7 +10,7 @@ PROJECT = "book-series-numbering-repairer"
 
 def _require(data: dict[str, Any], key: str) -> Any:
     if not isinstance(data, dict):
-        raise ValueError("input and entry records must be JSON objects")
+        raise TypeError("input and entry records must be JSON objects")
     value = data.get(key)
     if value is None or value == "" or value == []:
         raise ValueError(f"{key} is required")
@@ -20,7 +20,7 @@ def _require(data: dict[str, Any], key: str) -> Any:
 def _series_numbering(data: dict[str, Any]) -> dict[str, Any]:
     entries = _require(data, "entries")
     if not isinstance(entries, list):
-        raise ValueError("entries must be an array")
+        raise TypeError("entries must be an array")
     mode = data.get("order_mode", "reading")
     if mode not in {"reading", "publication"}:
         raise ValueError("order_mode must be reading or publication")
@@ -31,7 +31,7 @@ def _series_numbering(data: dict[str, Any]) -> dict[str, Any]:
     for original, item in enumerate(entries):
         key = "publication_order" if mode == "publication" else "reading_order"
         if not isinstance(item, dict):
-            raise ValueError(f"entries[{original}] must be an object")
+            raise TypeError(f"entries[{original}] must be an object")
         value = item.get(key)
         if value is None or value == "":
             if mode == "publication":
@@ -80,7 +80,7 @@ def _series_numbering(data: dict[str, Any]) -> dict[str, Any]:
 
 def analyze(data: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(data, dict):
-        raise ValueError("input must be a JSON object")
+        raise TypeError("input must be a JSON object")
     return {"version": 1, "project": PROJECT, **_series_numbering(data)}
 
 
