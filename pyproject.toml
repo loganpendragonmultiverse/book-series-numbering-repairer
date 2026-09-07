@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "book-series-numbering-repairer"
-version = "1.0.0"
+version = "1.1.0"
 description = "Normalize prequels, novellas, decimals, fractions, and alternate series numbering."
 readme = "README.md"
 requires-python = ">=3.10"

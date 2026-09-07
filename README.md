@@ -36,3 +36,13 @@ python -m build
 The project is feature-complete for its documented v1 scope. Maintenance focuses on correctness, security, compatibility, and well-supported input improvements.
 
 Part of the [Logan Pendragon Forge open-source collection](https://www.loganpendragonforge.com/open-source/). Licensed under the [MIT License](LICENSE).
+
+## Version 1.1.0: reviewed improvements
+
+Reject invalid numeric orders and add CSV input, explicit reading/publication order and an editable local HTML preview.
+
+```bash
+series-numbering examples/sample.json --format html --output preview.html
+```
+
+CSV input supports title, number, reading_order and publication_order columns. JSON accepts `order_mode` (`reading` or `publication`) and `special_labels`, an explicit label-to-number mapping. `--order publication` requires publication_order for every entry. Reading order uses reading_order when supplied and falls back to number. Fractions must have finite operands and a nonzero denominator; numeric ties preserve source order. The HTML preview edits fields and downloads a new JSON input. Run the CLI again to validate and reorder those edits. No canonical reading or publication order is inferred.
