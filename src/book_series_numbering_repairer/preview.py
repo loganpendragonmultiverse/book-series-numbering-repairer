@@ -31,7 +31,7 @@ for(const [i,item] of data.entries.entries()){
  const section=document.createElement('section');const heading=document.createElement('h2');
  heading.textContent=`Entry ${i+1} — analyzed order ${item.normalized_order}`;section.append(heading);
  const fields=document.createElement('div');fields.className='fields';
- for(const [key,title] of [['title','Title'],['number','Original number or special label'],['reading_order','Reading order'],['publication_order','Publication order']]){
+ for(const [key,title] of [['series','Series group'],['title','Title'],['number','Original number or special label'],['reading_order','Reading order'],['publication_order','Publication order']]){
   const label=document.createElement('label');label.textContent=title;
   const input=document.createElement('input');input.value=item[key]??'';
   input.addEventListener('input',()=>item[key]=input.value);label.append(input);fields.append(label);

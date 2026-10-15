@@ -46,3 +46,15 @@ series-numbering examples/sample.json --format html --output preview.html
 ```
 
 CSV input supports title, number, reading_order and publication_order columns. JSON accepts `order_mode` (`reading` or `publication`) and `special_labels`, an explicit label-to-number mapping. `--order publication` requires publication_order for every entry. Reading order uses reading_order when supplied and falls back to number. Fractions must have finite operands and a nonzero denominator; numeric ties preserve source order. The HTML preview edits fields and downloads a new JSON input. Run the CLI again to validate and reorder those edits. No canonical reading or publication order is inferred.
+
+## Explicit series groups (1.2)
+
+Each entry may supply a series string, also supported as a CSV column and an
+editable field in the HTML preview. Names are trimmed and case-sensitive.
+Missing or blank series values share one unnamed group, preserving legacy inputs.
+Groups appear in first-supplied order; entries sort by the selected reading or
+publication position within each group, preserving source order for ties.
+The collisions array identifies a series, normalized_order, and source_indices.
+The legacy ambiguous_orders list now includes only positions that collide within
+a series. Equal positions in distinct series are valid and do not collide.
+Series names and orders are supplied by you; no canon or file renames are inferred.
