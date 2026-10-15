@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0 — 2026-10-15
+
+- Group entries by explicit series and report within-series normalized-position collisions.
+- Preserve series through CSV input, JSON reports, and editable HTML downloads.
+
 ## 1.1.0 - 2026-09-07
 
 - Reject invalid numeric orders and add CSV input, explicit reading/publication order and an editable local HTML preview.

@@ -28,10 +28,16 @@ def _series_numbering(data: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(labels, dict) or not all(isinstance(key, str) for key in labels):
         raise ValueError("special_labels must map labels to explicit numeric orders")
     normalized = []
+    groups: dict[str, int] = {}
     for original, item in enumerate(entries):
         key = "publication_order" if mode == "publication" else "reading_order"
         if not isinstance(item, dict):
             raise TypeError(f"entries[{original}] must be an object")
+        series = item.get("series", "")
+        if not isinstance(series, str):
+            raise TypeError(f"entries[{original}].series must be text")
+        series = series.strip()
+        groups.setdefault(series, len(groups))
         value = item.get(key)
         if value is None or value == "":
             if mode == "publication":
@@ -60,21 +66,44 @@ def _series_numbering(data: dict[str, Any]) -> dict[str, Any]:
         normalized.append(
             {
                 **item,
+                "series": series,
                 "normalized_order": str(order.normalize()),
                 "display": f"Book {order.normalize()}: {item.get('title', 'Untitled')}",
                 "source_index": original,
             }
         )
-    normalized.sort(key=lambda item: (Decimal(item["normalized_order"]), item["source_index"]))
+    normalized.sort(
+        key=lambda item: (
+            groups[item["series"]],
+            Decimal(item["normalized_order"]),
+            item["source_index"],
+        )
+    )
+    collisions = []
+    for series in groups:
+        counts = Counter(
+            item["normalized_order"] for item in normalized if item["series"] == series
+        )
+        for order, count in counts.items():
+            if count > 1:
+                collisions.append(
+                    {
+                        "series": series,
+                        "normalized_order": order,
+                        "source_indices": [
+                            item["source_index"]
+                            for item in normalized
+                            if item["series"] == series and item["normalized_order"] == order
+                        ],
+                    }
+                )
     return {
         "entries": normalized,
         "order_mode": mode,
         "special_labels": labels,
-        "ambiguous_orders": [
-            str(order)
-            for order, count in Counter(item["normalized_order"] for item in normalized).items()
-            if count > 1
-        ],
+        "series_groups": list(groups),
+        "collisions": collisions,
+        "ambiguous_orders": list(dict.fromkeys(item["normalized_order"] for item in collisions)),
     }
 
 
