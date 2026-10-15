@@ -82,18 +82,25 @@ def _series_numbering(data: dict[str, Any]) -> dict[str, Any]:
     collisions = []
     for series in groups:
         counts = Counter(
-            item["normalized_order"] for item in normalized if item["series"] == series
+            (
+                Decimal(0)
+                if Decimal(item["normalized_order"]) == 0
+                else Decimal(item["normalized_order"])
+            )
+            for item in normalized
+            if item["series"] == series
         )
         for order, count in counts.items():
             if count > 1:
                 collisions.append(
                     {
                         "series": series,
-                        "normalized_order": order,
+                        "normalized_order": str(order.normalize()),
                         "source_indices": [
                             item["source_index"]
                             for item in normalized
-                            if item["series"] == series and item["normalized_order"] == order
+                            if item["series"] == series
+                            and Decimal(item["normalized_order"]) == order
                         ],
                     }
                 )

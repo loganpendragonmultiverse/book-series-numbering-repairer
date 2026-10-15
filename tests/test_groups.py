@@ -65,3 +65,26 @@ def test_csv_json_and_html_preserve_groups(tmp_path, capsys):
 def test_invalid_series(series):
     with pytest.raises(TypeError, match="series"):
         analyze({"entries": [{"number": 1, "series": series}]})
+
+
+def test_signed_zero_collisions_use_numeric_identity():
+    report = analyze(
+        {
+            "entries": [
+                {"series": "A", "number": "-0", "title": "negative"},
+                {"series": "B", "number": "0"},
+                {"series": "A", "number": "0", "title": "positive"},
+                {"series": "A", "number": "-0/2", "title": "fraction"},
+                {"series": "A", "number": "special", "title": "label"},
+            ],
+            "special_labels": {"special": "-0.00"},
+        }
+    )
+    assert report["collisions"] == [
+        {"series": "A", "normalized_order": "0", "source_indices": [0, 2, 3, 4]}
+    ]
+    assert report["ambiguous_orders"] == ["0"]
+    entries = report["entries"][:4]
+    assert [e["title"] for e in entries] == ["negative", "positive", "fraction", "label"]
+    assert entries[0]["normalized_order"] == "-0"
+    assert entries[0]["display"] == "Book -0: negative"

@@ -2,6 +2,7 @@
 
 ## 1.2.0 — 2026-10-15
 
+- Compare normalized positions numerically, including signed zero and fractional aliases.
 - Group entries by explicit series and report within-series normalized-position collisions.
 - Preserve series through CSV input, JSON reports, and editable HTML downloads.
 
