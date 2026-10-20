@@ -58,3 +58,29 @@ The collisions array identifies a series, normalized_order, and source_indices.
 The legacy ambiguous_orders list now includes only positions that collide within
 a series. Equal positions in distinct series are valid and do not collide.
 Series names and orders are supplied by you; no canon or file renames are inferred.
+
+## Exact numeric positions (1.2.1)
+
+Positions compare as exact rational numbers. Distinct long decimal strings stay
+distinct; equivalent fractions collide. Finite decimal results use normalized
+decimal text, and repeating results use reduced fractions such as `1/3` instead
+of rounded approximations. Source order still breaks exact ties.
+
+Numeric operands may contain at most 256 characters with decimal exponent
+magnitudes up to 1000. Boolean or structured numeric values and non-string titles
+fail clearly. The editable HTML preview preserves numeric fields as strings to
+avoid browser rounding; download its JSON and rerun the CLI to validate changes.
+Existing report files are protected by exclusive creation.
+
+Installed packages include project documents and `examples/sample.json` under
+`share/doc/book-series-numbering-repairer/` inside the Python environment. Locate
+its root with `python -c "import sys; print(sys.prefix)"`.
+
+CSV imports require nonempty, unique headers and the same number of cells in
+every nonblank record. Quoted commas and multiline fields remain supported.
+Ambiguous or malformed CSV fails before report generation instead of discarding
+an earlier column or inventing a missing cell.
+
+Existing output paths, including dangling symbolic links, are refused before
+exclusive file creation. This protects ordinary output collisions; it does not
+promise protection against hostile concurrent file-system changes.

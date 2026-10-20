@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.1 - 2026-10-20
+
+- Reject duplicate/blank CSV headers, ragged records and malformed quoting without discarding data.
+- Preserve exact long-decimal and fractional ordering without rounding collisions.
+- Reject malformed numeric/title fields and bound numeric parsing work.
+- Create output exclusively and include project authority documents in wheels.
+
 ## 1.2.0 — 2026-10-15
 
 - Compare normalized positions numerically, including signed zero and fractional aliases.
