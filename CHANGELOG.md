@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.2
+
+- Correct the testing guide to describe the actual CI checks and explicitly state that dependency auditing is not part of these workflows. Runtime behavior is unchanged.
+
 ## 1.2.1 - 2026-10-20
 
 - Reject duplicate/blank CSV headers, ragged records and malformed quoting without discarding data.
