@@ -1,6 +1,6 @@
 # Testing
 
-Run `ruff format --check .`, `ruff check .`, `mypy src`, `pytest`, and `python -m build`. CI also audits dependencies and runs the supported OS/Python matrix.
+Run `ruff format --check .`, `ruff check .`, `mypy src`, `pytest`, and `python -m build`. CI runs the supported OS/Python matrix and CodeQL analysis. The current workflows do not run a dependency audit.
 
 ## 1.1.0 regression acceptance
 
