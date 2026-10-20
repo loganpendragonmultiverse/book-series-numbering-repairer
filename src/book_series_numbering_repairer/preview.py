@@ -5,14 +5,32 @@ from typing import Any
 
 
 def render_html(report: dict[str, Any]) -> str:
-    payload = json.dumps(report).replace("<", "\\u003c").replace("&", "\\u0026")
+    # HTML's JSON parser uses binary floats. Keep authored numeric positions exact.
+    preview = {
+        **report,
+        "entries": [
+            {
+                key: str(value)
+                if key in {"number", "reading_order", "publication_order"}
+                and isinstance(value, (int, float))
+                else value
+                for key, value in item.items()
+            }
+            for item in report["entries"]
+        ],
+        "special_labels": {
+            key: str(value) if isinstance(value, (int, float)) else value
+            for key, value in report["special_labels"].items()
+        },
+    }
+    payload = json.dumps(preview).replace("<", "\\u003c").replace("&", "\\u0026")
     return (
         """<!doctype html><html lang="en"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Book series order preview</title><style>
 body{font:17px system-ui;background:#f5f2eb;color:#202d38;margin:auto;padding:24px;max-width:1000px}
 section{background:white;border:1px solid #c4cbd1;border-radius:12px;padding:18px;margin:16px 0}
-label{display:block;margin:10px 0}input{display:block;box-sizing:border-box;width:100%;padding:9px;font:inherit}
+h2{overflow-wrap:anywhere}label{display:block;margin:10px 0}input{display:block;box-sizing:border-box;width:100%;padding:9px;font:inherit}
 button,select{font:inherit;padding:10px;max-width:100%}button{background:#173d51;color:white;border:0;border-radius:5px}
 .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px}
 </style><h1>Book series order preview</h1>

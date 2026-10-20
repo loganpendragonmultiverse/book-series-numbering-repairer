@@ -11,3 +11,13 @@ Reject invalid numeric orders and add CSV input, explicit reading/publication or
 CSV input supports title, number, reading_order and publication_order columns. JSON accepts `order_mode` (`reading` or `publication`) and `special_labels`, an explicit label-to-number mapping. `--order publication` requires publication_order for every entry. Reading order uses reading_order when supplied and falls back to number. Fractions must have finite operands and a nonzero denominator; numeric ties preserve source order. The HTML preview edits fields and downloads a new JSON input. Run the CLI again to validate and reorder those edits. No canonical reading or publication order is inferred.
 
 Local formatting, lint, strict types and regression tests pass. Public release completion requires the protected CI/CodeQL matrix, tagged artifacts and matching Forge catalog/detail deployment.
+
+## Exact positions and packaging
+
+Use exact rational identities for comparison and collisions. Preserve finite
+decimal display compatibility and signed-zero entry evidence; reduce repeating
+fractions without pretending they are exact decimal approximations. Bound each
+numeric operand to 256 characters and absolute adjusted decimal exponent 1000.
+HTML edit/download must preserve numeric text through JavaScript parsing and
+reimport. Keep supplied series and source tie order. Include four authority
+documents and the representative example in both release distributions.

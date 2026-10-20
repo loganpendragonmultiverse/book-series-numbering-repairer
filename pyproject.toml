@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "book-series-numbering-repairer"
-version = "1.2.0"
+version = "1.2.1"
 description = "Normalize prequels, novellas, decimals, fractions, and alternate series numbering."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -35,3 +35,8 @@ omit = ["src/*/__main__.py"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--cov=book_series_numbering_repairer --cov-branch --cov-report=term-missing --cov-fail-under=90"
+
+[tool.setuptools.data-files]
+"share/doc/book-series-numbering-repairer" = ["README.md", "CHANGELOG.md", "DEVELOPMENT.md", "TESTING.md"]
+
+"share/doc/book-series-numbering-repairer/examples" = ["examples/sample.json"]
