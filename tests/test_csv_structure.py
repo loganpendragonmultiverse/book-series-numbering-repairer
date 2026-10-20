@@ -1,4 +1,3 @@
-
 import pytest
 
 from book_series_numbering_repairer.cli import main
